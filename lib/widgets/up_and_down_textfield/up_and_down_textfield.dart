@@ -4,9 +4,11 @@ import 'package:test_my_library/extensions/num.dart';
 import 'package:test_my_library/extensions/string_extension.dart';
 import 'package:test_my_library/utils/app_format.dart';
 import 'package:test_my_library/utils/decorations/input_decorations.dart';
-import 'package:test_my_library/widgets/up_and_down_textfield/parrent_button.dart';
+import 'package:test_my_library/widgets/base/parrent_button.dart';
+import 'package:test_my_library/widgets/base/text_field_base.dart';
+import 'package:textfield_pattern_formatter/formatters/thousand_separator_decimal_formatter.dart';
 
-import 'error_text_field_recommendation.dart';
+import '../base/error_text_field_recommendation.dart';
 
 enum StockTextFieldType { price, volume }
 
@@ -69,7 +71,8 @@ class _UpAndDownTextFieldState extends State<UpAndDownTextField> {
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ?? TextEditingController();
+    controller =
+        widget.controller ?? TextEditingController(text: widget.baseValue);
     myFocusNode.addListener(() {
       if (!myFocusNode.hasFocus) {
         _handleUnFocus();
@@ -105,14 +108,7 @@ class _UpAndDownTextFieldState extends State<UpAndDownTextField> {
 
       final surPlus = getSurPlus(value);
       value += widget.step - surPlus;
-      final content = value.toFormatThousandSeparator();
-      controller
-        ..text = content
-        ..selection = TextSelection.collapsed(offset: content.length);
-
-      if (widget.onChanged != null) {
-        widget.onChanged!(num.parse(content.reverseFromMoney));
-      }
+      updateAfterActions(value);
     } catch (e) {
       throw Exception('Value is not a number: $e');
     }
@@ -132,16 +128,20 @@ class _UpAndDownTextFieldState extends State<UpAndDownTextField> {
       if (value < 0) {
         value = 0;
       }
-      final content = value.toFormatThousandSeparator();
-      controller
-        ..text = content
-        ..selection = TextSelection.collapsed(offset: content.length);
-
-      if (widget.onChanged != null) {
-        widget.onChanged!(num.parse(content.reverseFromMoney));
-      }
+      updateAfterActions(value);
     } catch (e) {
       throw Exception('Value is not a number: $e');
+    }
+  }
+
+  void updateAfterActions(num value) {
+    final content = value.toFormatThousandSeparator();
+    controller
+      ..text = content
+      ..selection = TextSelection.collapsed(offset: content.length);
+
+    if (widget.onChanged != null) {
+      widget.onChanged!(num.parse(content.reverseFromMoney));
     }
   }
 
@@ -196,90 +196,13 @@ class _UpAndDownTextFieldState extends State<UpAndDownTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final isPrice = widget.type == StockTextFieldType.price;
-    return IgnorePointer(
-      ignoring: widget.disable,
-      child: Padding(
-        padding: widget.padding ?? const EdgeInsets.only(left: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.title ?? '',
-              style: widget.titleStyle ??
-                  const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black38),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            GestureDetector(
-              onTap: () {
-                myFocusNode.requestFocus();
-              },
-              child: Container(
-                height: inputHeight,
-                decoration: BoxDecoration(
-                    color: hasErrorText ? Colors.red : Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: hasErrorText ? Colors.red : Colors.grey)),
-                child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      ParentButton(
-                          onTap: onPressMinus,
-                          child: widget.leftButton ??
-                              const Icon(
-                                Icons.minimize,
-                                size: 20,
-                              )),
-                      Expanded(
-                          child: Center(
-                        child: IntrinsicWidth(
-                          child: TextField(
-                            focusNode: myFocusNode,
-                            controller: controller,
-                            style: getContentStyle(),
-                            decoration: _inputDecoration,
-                            keyboardType: isPrice
-                                ? const TextInputType.numberWithOptions(
-                                    decimal: true)
-                                : TextInputType.number,
-                            inputFormatters: widget.inputFormatters,
-                            onChanged: onChangedText,
-                          ),
-                        ),
-                      )),
-                      ParentButton(
-                          onTap: onPressPlus,
-                          child: widget.rightButton ??
-                              const Icon(
-                                Icons.add,
-                                size: 20,
-                              ))
-                    ]),
-              ),
-            ),
-            Visibility(
-              visible: hasErrorText && widget.isShowErrorText,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  ErrorTextFieldRecommendation(
-                    widget.errorText,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+    return TextFieldBase(
+      controller: controller,
+      onChanged: onChangedText,
+      onLeftAction: onPressMinus,
+      onRightAction: onPressPlus,
+      inputFormatters: [ThousandSeparatorDecimalFormatter()],
+      baseValue: '0',
     );
   }
 
