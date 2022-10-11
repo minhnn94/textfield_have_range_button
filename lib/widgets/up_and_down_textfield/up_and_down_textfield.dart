@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:test_my_library/extensions/num.dart';
-import 'package:test_my_library/extensions/string_extension.dart';
-import 'package:test_my_library/utils/app_format.dart';
-import 'package:test_my_library/utils/decorations/input_decorations.dart';
-import 'package:test_my_library/widgets/base/parrent_button.dart';
-import 'package:test_my_library/widgets/base/text_field_base.dart';
+import 'package:textfield_have_range_button/extensions/num.dart';
+import 'package:textfield_have_range_button/extensions/string_extension.dart';
+import 'package:textfield_have_range_button/utils/app_format.dart';
+import 'package:textfield_have_range_button/widgets/base/text_field_base.dart';
 import 'package:textfield_pattern_formatter/formatters/thousand_separator_decimal_formatter.dart';
-
-import '../base/error_text_field_recommendation.dart';
 
 enum StockTextFieldType { price, volume }
 
@@ -66,8 +62,6 @@ class _UpAndDownTextFieldState extends State<UpAndDownTextField> {
   final FocusNode myFocusNode = FocusNode();
   late final TextEditingController controller;
 
-  InputDecoration get _inputDecoration =>
-      widget.decoration ?? InputDecorationCommon.baseModel();
   @override
   void initState() {
     super.initState();

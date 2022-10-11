@@ -1,5 +1,6 @@
-name: test_my_library
-description: A new Flutter project.
+name: textfield_have_range_button
+description: A Flutter Project Have range button for many type of input as Currency, calendar,..etc.
+repository: 'https://github.com/minhnn94/textfield_have_range_button'
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

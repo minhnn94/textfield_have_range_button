@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:test_my_library/utils/decorations/input_decorations.dart';
-import 'package:test_my_library/widgets/base/parrent_button.dart';
+import 'package:textfield_have_range_button/utils/decorations/input_decorations.dart';
+import 'package:textfield_have_range_button/widgets/base/parrent_button.dart';
 
 import 'error_text_field_recommendation.dart';
 
