@@ -17,7 +17,7 @@ class UpAndDownTextField extends StatefulWidget {
     this.minValue,
     this.maxValue,
     this.title,
-    this.type = StockTextFieldType.price,
+    this.type = TextFieldType.price,
     this.controller,
     this.padding,
     this.onChanged,
@@ -36,7 +36,7 @@ class UpAndDownTextField extends StatefulWidget {
 
   final String? title;
   final TextEditingController? controller;
-  final StockTextFieldType? type;
+  final TextFieldType? type;
   final EdgeInsetsGeometry? padding;
   final Function(num)? onChanged;
   final num? minValue;
@@ -197,6 +197,19 @@ class _UpAndDownTextFieldState extends State<UpAndDownTextField> {
       onRightAction: onPressPlus,
       inputFormatters: [ThousandSeparatorDecimalFormatter()],
       baseValue: '0',
+      minValue: widget.minValue,
+      maxValue: widget.maxValue,
+      type: widget.type,
+      padding: widget.padding,
+      step: widget.step,
+      disable: widget.disable,
+      errorText: widget.errorText,
+      isShowErrorText: widget.isShowErrorText,
+      titleStyle: widget.titleStyle,
+      contentStyle: widget.contentStyle,
+      decoration: widget.decoration,
+      rightButton: widget.rightButton,
+      leftButton: widget.leftButton,
     );
   }
 

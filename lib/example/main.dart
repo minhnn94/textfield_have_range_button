@@ -40,9 +40,16 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            UpAndDownTextField(
-              baseValue: '0',
+          children: <Widget>[
+            Container(
+              color: Colors.red,
+              width: 160,
+              height: 50,
+              child: UpAndDownTextField(
+                baseValue: '0',
+                padding: EdgeInsets.zero,
+                decoration: InputDecoration(labelStyle: TextStyle(fontSize: 8)),
+              ),
             ),
           ],
         ),

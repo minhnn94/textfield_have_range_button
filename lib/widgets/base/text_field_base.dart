@@ -5,7 +5,7 @@ import 'package:textfield_have_range_button/widgets/base/parrent_button.dart';
 
 import 'error_text_field_recommendation.dart';
 
-enum StockTextFieldType { price, volume }
+enum TextFieldType { price, volume }
 
 const decimalDigit = 2;
 const inputHeight = 50.0;
@@ -16,7 +16,7 @@ class TextFieldBase extends StatefulWidget {
     this.minValue,
     this.maxValue,
     this.title,
-    this.type = StockTextFieldType.price,
+    this.type = TextFieldType.price,
     this.controller,
     this.padding,
     this.onChanged,
@@ -37,7 +37,7 @@ class TextFieldBase extends StatefulWidget {
 
   final String? title;
   final TextEditingController? controller;
-  final StockTextFieldType? type;
+  final TextFieldType? type;
   final EdgeInsetsGeometry? padding;
   final Function(String)? onChanged;
   final num? minValue;
@@ -80,9 +80,17 @@ class _TextFieldBaseState extends State<TextFieldBase> {
     super.dispose();
   }
 
+  TextInputType getKeyBoardType(bool isPrice) {
+    if (isPrice) {
+      return const TextInputType.numberWithOptions(decimal: true);
+    } else {
+      return TextInputType.number;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isPrice = widget.type == StockTextFieldType.price;
+    final isPrice = widget.type == TextFieldType.price;
     return IgnorePointer(
       ignoring: widget.disable,
       child: Padding(
@@ -90,16 +98,23 @@ class _TextFieldBaseState extends State<TextFieldBase> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.title ?? '',
-              style: widget.titleStyle ??
-                  const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black38),
-            ),
-            const SizedBox(
-              height: 8,
+            Visibility(
+              visible: (widget.title ?? '').isNotEmpty,
+              child: Column(
+                children: [
+                  Text(
+                    widget.title ?? '',
+                    style: widget.titleStyle ??
+                        const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black38),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
             ),
             GestureDetector(
               onTap: () {
@@ -134,10 +149,7 @@ class _TextFieldBaseState extends State<TextFieldBase> {
                             controller: controller,
                             style: widget.titleStyle,
                             decoration: _inputDecoration,
-                            keyboardType: isPrice
-                                ? const TextInputType.numberWithOptions(
-                                    decimal: true)
-                                : TextInputType.number,
+                            keyboardType: getKeyBoardType(isPrice),
                             inputFormatters: widget.inputFormatters,
                             onChanged: widget.onChanged,
                           ),
