@@ -16,7 +16,7 @@ repository: 'https://github.com/minhnn94/textfield_have_range_button'
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+1
+version: 1.2.1+1
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   textfield_pattern_formatter: ^0.1.1
-  intl: ^0.18.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
